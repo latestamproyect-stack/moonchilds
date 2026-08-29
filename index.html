@@ -1371,12 +1371,15 @@ function handleGoogleCredential(response){
 function loginWithGoogleProfile(profile){
   const userId = 'g_' + profile.sub;
   const existing = state.users[userId];
+
+  const ADMIN_EMAIL = 'tu-correo@gmail.com'; // <-- pon aquí tu email exacto de Google
+
   state.users[userId] = {
     name: profile.name,
     username: (existing && existing.username) || generateUniqueUsername(slugifyUsername(profile.name.split(' ')[0])),
     avatar: (existing && existing.avatar) || AVATAR_OPTIONS[Math.floor(Math.random()*AVATAR_OPTIONS.length)],
     bio: (existing && existing.bio) || 'Recién llegado/a al jardín 🌙',
-    isAdmin: false,
+    isAdmin: profile.email === ADMIN_EMAIL,
     email: profile.email,
   };
   state.currentUserId = userId;
